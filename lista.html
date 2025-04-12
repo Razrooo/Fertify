@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plantas</title>
+  <link rel="stylesheet" href="lista.css">
+</head>
+<body>
+  <h1>Lista de Plantas</h1>
+  <ul id="listaPlantas"></ul>
+
+  <script>
+    async function carregarPlantas() {
+      const token = localStorage.getItem('token');
+      const resposta = await fetch('http://localhost:3000/plantas', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const plantas = await resposta.json();
+      const lista = document.getElementById('listaPlantas');
+      lista.innerHTML = '';
+
+      plantas.forEach(p => {
+        const item = document.createElement('li');
+        item.textContent = `${p.nome} - pH: ${p.ph}`;
+        lista.appendChild(item);
+      });
+    }
+
+    carregarPlantas();
+  </script>
+</body>
+</html>

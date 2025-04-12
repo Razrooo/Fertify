@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Plantas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plantas Cadastradas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>pH Mínimo</th>
+                <th>pH Máximo</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-plantas">
+            <!-- Os dados do banco serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        async function carregarPlantas() {
+            try {
+                const response = await fetch('http://localhost:3000/plantas'); // Rota da API
+                const plantas = await response.json();
+
+                const tabela = document.getElementById('tabela-plantas');
+                tabela.innerHTML = '';
+
+                plantas.forEach(planta => {
+                    const linha = document.createElement('tr');
+                    linha.innerHTML = `
+                        <td>${planta.id}</td>
+                        <td>${planta.nome}</td>
+                        <td>${planta.ph_minimo}</td>
+                        <td>${planta.ph_maximo}</td>
+                    `;
+                    tabela.appendChild(linha);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+            }
+        }
+
+        carregarPlantas();
+    </script>
+</body>
+</html>
